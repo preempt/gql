@@ -30,7 +30,7 @@ class ImportVisitor(ast.NodeVisitor):
         self.calls = []
 
     def visit_Call(self, node):  # noqa
-        if node.func.id == 'gql':
+        if getattr(node.func, "id", "") == 'gql':
             self.calls.append(node)
 
     def node_query(self, node):
@@ -110,7 +110,6 @@ class ImportOrderChecker(object):
                 message = str(e)
                 yield self.error(node, GQL_SYNTAX_ERROR, message)
                 continue
-
             validation_errors = self.validation_errors(ast)
             if validation_errors:
                 for error in validation_errors:

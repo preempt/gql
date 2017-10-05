@@ -17,6 +17,7 @@ class Linter(ImportOrderChecker):
         parser.add_option(
             "--gql-introspection-schema",
             metavar="FILE",
+            parse_from_config=True,
             help="Import names to consider as application specific"
         )
         parser.add_option(
@@ -24,11 +25,10 @@ class Linter(ImportOrderChecker):
             default='',
             action="store",
             type="string",
+            parse_from_config=True,
             help=("Style to follow. Available: "
                   "cryptography, google, smarkets, pep8")
         )
-        parser.config_options.append("gql-introspection-schema")
-        parser.config_options.append("gql-typedef-schema")
 
     @classmethod
     def parse_options(cls, options):
