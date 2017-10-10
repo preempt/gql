@@ -41,7 +41,12 @@ class ImportVisitor(ast.NodeVisitor):
         if isinstance(node, ast.Call):
             assert node.args
             arg = node.args[0]
-            if not isinstance(arg, ast.Str):
+            if isinstance(arg, ast.Str):
+                return arg.s
+            elif isinstance(arg, ast.BinOp) and isinstance(arg.op, ast.Mod) and isinstance(arg.left, ast.Str):
+                # Remove the %s stubs from the string format, to let the pure GQL be linted
+                return arg.left.s.replace("%s", "")
+            else:
                 return
         else:
             raise TypeError(type(node))
